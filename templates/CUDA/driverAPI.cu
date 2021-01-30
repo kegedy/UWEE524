@@ -72,16 +72,15 @@ int main(int argc, char** argv) {
     cudaChk(cuModuleGetFunction(&cuFunction, cuModule, kernel_name));
 
     // Allocate vectors in host memory
-    float *a, *b, *c;  
     float* a = (float*)malloc(size);
     float* b = (float*)malloc(size);
     float* c = (float*)malloc(size);
 
     // Allocate vectors in device memory
     CUdeviceptr dev_a, dev_b, dev_c;
-    cudaChk(cuMemAlloc(&d_a, size));
-    cudaChk(cuMemAlloc(&d_b, size));
-    cudaChk(cuMemAlloc(&d_c, size));
+    cudaChk(cuMemAlloc(&dev_a, size));
+    cudaChk(cuMemAlloc(&dev_b, size));
+    cudaChk(cuMemAlloc(&dev_c, size));
 
     // Initialize host vectors
     initWidth(3, a, N);

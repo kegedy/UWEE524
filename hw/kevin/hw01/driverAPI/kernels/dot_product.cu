@@ -17,7 +17,7 @@ __global__ void dot_product_float(float* a, float* b, float* c, int N, int P) {
             // Store partial sum into return array with size int(N/P)
             // Total dot product sum is calculated by host
             if ((i+1)%P == 0) {
-                c[i/P] = partialsum;
+                c[(i+1)/P] = partialsum;
                 partialsum = 0;
             }
         }

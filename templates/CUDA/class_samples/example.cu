@@ -64,11 +64,11 @@ int main() {
     printf("EXEC CONFIG: Number blocks: %d, number threads: %d\n", numberOfBlocks, threadsPerBlock);
     vecadd_1d<<<numberOfBlocks, threadsPerBlock>>>(c,a,b,N);
 
-    addVectorsErr = cudaGetLastError();
-    if (addVectorsErr != cudaSuccess) printf("sync error: %s\n", cudaGetErrorString(addVectorsErr));
+    cudaError_t cuErrSync  = cudaGetLastError();
+    if (cuErrSync != cudaSuccess) printf("sync error: %s\n", cudaGetErrorString(cuErrSync));
 
-    asyncErr = cudaDeviceSynchronize();
-    if (asyncErr != cudaSuccess) printf("asyc error:  %s\n", cudaGetErrorString(asyncErr0));
+    cudaError_t cuErrAsync = cudaDeviceSynchronize();
+    if (cuErrAsync != cudaSuccess) printf("asyc error:  %s\n", cudaGetErrorString(asyncErr0));
 
     checkElementsAre(7, c, N);
 

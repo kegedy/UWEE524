@@ -5,9 +5,9 @@
 `git clone git@github.com:kegedy/UWEE524.git`
 
 ### Compile CUDA kernels
-`nvcc -o home/kegedy/Documents/UWEE524/hw/kevin/hw01/driverAPI/matrix_add.ptx home/kegedy/Documents/UWEE524/hw/kevin/hw01/driverAPI/matrix_add.cu -ptx`
-`nvcc -o home/kegedy/Documents/UWEE524/hw/kevin/hw01/driverAPI/dot_product.ptx home/kegedy/Documents/UWEE524/hw/kevin/hw01/driverAPI/dot_product.cu -ptx`
-`nvcc -o home/kegedy/Documents/UWEE524/hw/kevin/hw01/driverAPI/blas2.ptx home/kegedy/Documents/UWEE524/hw/kevin/hw01/driverAPI/blas2.cu -ptx`
+`nvcc -o home/kegedy/Documents/UWEE524/hw/kevin/hw01/driverAPI/kernels/matrix_add.ptx home/kegedy/Documents/UWEE524/hw/kevin/hw01/driverAPI/kernels/matrix_add.cu -ptx`
+`nvcc -o home/kegedy/Documents/UWEE524/hw/kevin/hw01/driverAPI/kernels/dot_product.ptx home/kegedy/Documents/UWEE524/hw/kevin/hw01/driverAPI/kernels/dot_product.cu -ptx`
+`nvcc -o home/kegedy/Documents/UWEE524/hw/kevin/hw01/driverAPI/kernels/blas2.ptx home/kegedy/Documents/UWEE524/hw/kevin/hw01/driverAPI/kernels/blas2.cu -ptx`
 
 ### Questions
 Q1. See comments in matrix_add.cu, lines 8-10.
@@ -21,7 +21,7 @@ Q4. Using performance counters around the kernel dispatch is not satisfactory be
 Q5. Better timing measurements are [PROVIDE]
 
 Q6. product_add.cu results
-| Run | precision: float | precision: float2 | precision: float4 |
+| Run  | precision: float | precision: float2 | precision: float4 |
 |------|------|------|------|
 |  1   | 0.0  | 0.0  | 0.0  |
 |  2   | 0.0  | 0.0  | 0.0  |
@@ -31,13 +31,14 @@ Q6. product_add.cu results
 |------|------|------|------|
 | avg  | 0.0  | 0.0  | 0.0  |
 
-Q7. | Tolerance | kernel: matrix_add | kernel: dot_product | kernel: blas2 |
-|-------|-------|-------|-------|
-| 1e-7  | pass  | pass  | pass  |
-| 1e-8  | pass  | pass  | pass  |
-| 1e-9  | pass  | pass  | pass  |
-| 1e-10 | pass  | pass  | pass  |
-| 1e-11 | pass  | pass  | pass  |
+Q7. Kernel tolerances
+| Tolerance | kernel: matrix_add | kernel: dot_product | kernel: blas2 |
+|-----------|-------|-------|-------|
+| 1e-7      | pass  | pass  | pass  |
+| 1e-8      | pass  | pass  | pass  |
+| 1e-9      | pass  | pass  | pass  |
+| 1e-10     | pass  | pass  | pass  |
+| 1e-11     | pass  | pass  | pass  |
 
 
 Q8. Kernel [PROVIDE] had the greatest difference in results between CPU and GPU.

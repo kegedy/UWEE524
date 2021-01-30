@@ -1,54 +1,33 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
-#include "tests.h"
+#include "matrix_add_test.h"
+#include "dot_product_test.h"
+#include "blas2_test.h"
+#include "helper.h"
 
-#define N (1<<25)
+#define N 1024
 #define THREADS_PER_BLOCK 1024
 #define NUMBER_OF_BLOCKS 32
-#define GRID_DIM_X 4
+#define GRID_DIM_X NUMBER_OF_BLOCKS
 #define GRID_DIM_Y 1
 #define GRID_DIM_Z 1
 #define BLOCK_DIM_X THREADS_PER_BLOCK
 #define BLOCK_DIM_Y 1
 #define BLOCK_DIM_Z 1
 
-// TIME OPERATIONS: 
-// https://stackoverflow.com/questions/1739259/how-to-use-queryperformancecounter
-#define TIMER_INIT \
-    LARGE_INTEGER frequency; \
-    LARGE_INTEGER t1,t2; \
-    double elapsedTime; \
-    QueryPerformanceFrequency(&frequency);
-
-#define TIMER_START QueryPerformanceCounter(&t1);
-
-#define TIMER_STOP \
-    QueryPerformanceCounter(&t2); \
-    elapsedTime=(float)(t2.QuadPart-t1.QuadPart)/frequency.QuadPart; \
-    std::wcout<<elapsedTime<<L" sec"<<endl;
-
-inline cudaError_t checkCuda(cudaError_t result) {
-    if (result != cudaSuccess) {
-        fprintf(stderr, "CUDA Runtime Error: %s\n", cudaGetErrorString(result));
-        assert(result == cudaSuccess);
-    }
-    return result;
-}
-
 int main(int argc, char** argv) {
     
-    TIMER_INIT
-
     // Define static variables
-    char* module_file = "vec_add.ptx";
-    char* kernel_name = "vec_add";
+    char* ModuleFile = "matrix_add.ptx";
+    char* KernelName = "matrix_add";
     int size = N * sizeof(int);
     int deviceCount = 0;
     CUdevice cuDevice;
     CUcontext cuContext;
     CUmodule cuModule;
     CUfunction cuFunction;
+    TIMER_INIT
    
     // Initialize GPU host API 
     cudaChk(cuInit(0));
@@ -68,28 +47,37 @@ int main(int argc, char** argv) {
     // Create context -> cuContext
     cudaChk(cuCtxCreate(&cuContext, 0, cuDevice));
 
+    // Tests
+    // printf('matrix_add tests:');
+    // matrix_add_test();
+    // printf('\n')
+    // printf('dot_product tests:');
+    // dot_product_test();
+    // printf('\n');
+    // printf('blas2 tests:');
+    // blas2_test();
+
     // Load precompiled PTX from nvcc -> cuModule
-    cudaChk(cuModuleLoad(&cuModule, module_file));
+    cudaChk(cuModuleLoad(&cuModule, ModuleFile));
     
     // Get function handle from module -> cuFunction
-    cudaChk(cuModuleGetFunction(&cuFunction, cuModule, kernel_name));
+    cudaChk(cuModuleGetFunction(&cuFunction, cuModule, KernelName));
 
     // Allocate vectors in host memory
-    float *a, *b, *c;  
     float* a = (float*)malloc(size);
     float* b = (float*)malloc(size);
     float* c = (float*)malloc(size);
 
     // Allocate vectors in device memory
     CUdeviceptr dev_a, dev_b, dev_c;
-    cudaChk(cuMemAlloc(&d_a, size));
-    cudaChk(cuMemAlloc(&d_b, size));
-    cudaChk(cuMemAlloc(&d_c, size));
+    cudaChk(cuMemAlloc(&dev_a, size));
+    cudaChk(cuMemAlloc(&dev_b, size));
+    cudaChk(cuMemAlloc(&dev_c, size);
 
     // Initialize host vectors
-    initWidth(3, a, N);
-    initWidth(4, b, N);
-    initWidth(0, c, N);
+    initArr(3, a, N);
+    initArr(4, b, N);
+    initArr(0, c, N);
 
     // Copy vectors from host memory to device memory
     cudaChk(cuMemcpyHtoD(dev_a, a, size));
@@ -98,7 +86,7 @@ int main(int argc, char** argv) {
     // setup kernel arguments (using the simple kernel argument format)
     unsigned int sharedMemBytes = 1;
     CUstream hStream = 0;
-    void* args[] = { &dev_a, &dev_b, &dev_c, &N };
+    void* args[] = { &dev_a, &dev_b, &dev_c, M, N };
     
     // Launch the kernel on device
     TIMER_START
@@ -124,6 +112,12 @@ int main(int argc, char** argv) {
     cudaFree( dev_a );
     cudaFree( dev_b );
     cudaFree( dev_c );
+
+    addVectorsErr = cudaGetLastError();
+    if (addVectorsErr != cudaSuccess) printf("sync error: %s\n", cudaGetErrorString(addVectorsErr));
+
+    asyncErr = cudaDeviceSynchronize();
+    if (asyncErr != cudaSuccess) printf("asyc error:  %s\n", cudaGetErrorString(asyncErr0));
 
     return 0;
 }

@@ -6,16 +6,18 @@
 //   resultvector is Mx1
 
 extern "C"
-__global__ void BLAS2(float* a, float* M, float* v, float* b, float* w, M, N, foat* y) {
+__global__ void blas2(float* alpha, float* M, float* v, float* beta, float* w, M, N, foat* y) {
 
     int row  = blockDim.y * blockIdx.y + threadIdx.y;
+    float sum = 0;
 
 	if(row < M) {
 		for(int i=0; i<N; i++) {
-            y[row] +=  a*M[row*N + i] * x[i];
+            sum +=  alpha*M[row*N + i] * x[i];
         }
-        w[threadIdx.y] = b* w[threadIdx.y];
-        y[threadIdx.y] = y[threadIdx.y] + w[threadIdx.y];
+        y[row] = sum;
+        w[row] = beta* w[row];
+        y[row] = y[row] + w[row];
     }
     
 }

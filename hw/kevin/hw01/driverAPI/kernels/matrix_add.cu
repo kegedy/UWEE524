@@ -1,7 +1,7 @@
 // MATRIX ADDITION
 
 extern "C"
-__global__ void matrix_add(float* a, float* b, float* c, float M, float N) {
+__global__ void matrix_add(float* a, float* b, float* c, int M, int N) {
 
 	float col = blockDim.x * blockIdx.x + threadIdx.x; 
 	float row = blockDim.y * blockIdx.y + threadIdx.y;

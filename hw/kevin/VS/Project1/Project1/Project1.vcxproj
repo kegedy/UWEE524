@@ -148,10 +148,13 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="helper.h" />
-    <ClInclude Include="matrix_add.cuh" />
+    <ClInclude Include="matrix_add.cu" />
   </ItemGroup>
   <ItemGroup>
     <CudaCompile Include="main.cu" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="matrix_add.ptx" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

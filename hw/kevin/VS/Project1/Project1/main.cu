@@ -5,7 +5,7 @@
 #include <cuda.h>
 #include <cuda_runtime.h>
 #include "helper.h"
-#include "matrix_add.cuh"
+#include "matrix_add.cu"
 
 #define N 1024
 #define M 1024
@@ -49,7 +49,7 @@ int main(int argc, char** argv) {
     cuCtxCreate(&cuContext, 0, cuDevice);
 
     TIMER_INIT
-        CUmodule cuModule;
+    CUmodule cuModule;
     CUfunction cuFunction;
     char* ModuleFile = (char*)"matrix_add.ptx";
     char* KernelName = (char*)"matrix_add";

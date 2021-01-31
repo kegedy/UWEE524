@@ -1,2 +1,3 @@
-*.opendb
 hw/kevin/VS/Project1/.vs/*
+x64/*
+*.opendb

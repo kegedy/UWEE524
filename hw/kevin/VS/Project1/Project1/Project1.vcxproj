@@ -150,9 +150,11 @@
   <ItemGroup>
     <ClInclude Include="helper.h" />
     <ClInclude Include="matrix_add.cu" />
+    <ClInclude Include="matrix_add_test.cuh" />
   </ItemGroup>
   <ItemGroup>
     <CudaCompile Include="main.cu" />
+    <CudaCompile Include="matrix_add_test.cu" />
   </ItemGroup>
   <ItemGroup>
     <None Include="matrix_add.ptx" />

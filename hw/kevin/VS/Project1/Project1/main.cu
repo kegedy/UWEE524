@@ -5,7 +5,7 @@
 #include <cuda.h>
 #include "helper.h"
 #include "matrix_add.cu"
-#include "matrix_add_test.cu"
+#include "matrix_add_test.cuh"
 
 #define N 1024
 #define M 1024
@@ -48,80 +48,15 @@ int main(int argc, char** argv) {
     // Create context -> cuContext
     cuCtxCreate(&cuContext, 0, cuDevice);
 
-    // Define static variables
-    TIMER_INIT
-    CUmodule cuModule;
-    CUfunction cuFunction;
-    char* ModuleFile = (char*)"matrix_add.ptx";
-    char* KernelName = (char*)"matrix_add";
-
-    const int THREADS_PER_BLOCK = 1024;
-    const int NUMBER_OF_BLOCKS = 32;
-    const int GRID_DIM_X = 4;
-    const int GRID_DIM_Y = 1;
-    const int GRID_DIM_Z = 1;
-    const int BLOCK_DIM_X = THREADS_PER_BLOCK;
-    const int BLOCK_DIM_Y = 1;
-    const int BLOCK_DIM_Z = 1;
-
-    // Number of bytes to allocate for MxN matrix with type float
-    int size = (M * N) * sizeof(float);
-
-    // Load precompiled PTX from nvcc -> cuModule
-    cuModuleLoad(&cuModule, ModuleFile);
-
-    // Get function handle from module -> cuFunction
-    cuModuleGetFunction(&cuFunction, cuModule, KernelName);
-
-    // Allocate vectors in host memory
-    float** a = (float**)malloc(size);
-    float** b = (float**)malloc(size);
-    float** c = (float**)malloc(size);
-
-    // Allocate vectors in device memory
-    CUdeviceptr dev_a, dev_b, dev_c;
-    cuMemAlloc(&dev_a, size);
-    cuMemAlloc(&dev_b, size);
-    cuMemAlloc(&dev_c, size);
-
-    // Initialize host vectors
-    initMat(3, a, M, N);
-    initMat(4, b, M, N);
-    initMat(0, c, M, N);
-
-    // Copy vectors from host memory to device memory
-    cuMemcpyHtoD(dev_a, a, size);
-    cuMemcpyHtoD(dev_b, b, size);
-
-    // setup kernel arguments (using the simple kernel argument format)
-    unsigned int sharedMemBytes = 1;
-    CUstream hStream = 0;
-    void* args[] = { &dev_a, &dev_b, &dev_c };
-
-    // Launch the kernel on device
-    TIMER_START
-        cuLaunchKernel(cuFunction, \
-            GRID_DIM_X, GRID_DIM_Y, GRID_DIM_Z, \
-            BLOCK_DIM_X, BLOCK_DIM_Y, BLOCK_DIM_Z, \
-            sharedMemBytes, hStream, args, 0);
-    cuCtxSynchronize();
-    TIMER_STOP
-
-    // Retrieve results from device & verify/use
-    cuMemcpyDtoH(c, dev_c, size);
-
-    // Check data for correctness
-    checkElementsMat(7, c, M, N);
-
-    // Free Host Memory
-    free(a);
-    free(b);
-    free(c);
-
-    // Free Device Memory
-    cuMemFree(dev_a);
-    cuMemFree(dev_b);
-    cuMemFree(dev_c);
+    // Tests
+    printf("matrix_add tests:");
+    matrix_add_test();
+    // printf('\n')
+    // printf('dot_product tests:');
+    // dot_product_test();
+    // printf('\n');
+    // printf('blas2 tests:');
+    // blas2_test();
 
     return 0;
 }

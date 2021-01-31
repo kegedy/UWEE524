@@ -26,9 +26,15 @@
     <ClInclude Include="matrix_add.cu">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="matrix_add_test.cuh">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <CudaCompile Include="main.cu">
+      <Filter>Source Files</Filter>
+    </CudaCompile>
+    <CudaCompile Include="matrix_add_test.cu">
       <Filter>Source Files</Filter>
     </CudaCompile>
   </ItemGroup>

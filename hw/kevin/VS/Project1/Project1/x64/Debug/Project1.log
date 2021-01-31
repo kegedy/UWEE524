@@ -4,17 +4,4 @@
 C:/Users/PhotonUser/Documents/UWEE524/hw/kevin/VS/Project1/Project1/main.cu(58): warning : variable "NUMBER_OF_BLOCKS" was declared but never referenced
   
   main.cu
-  helper.cpp
-main.cu.obj : error LNK2019: unresolved external symbol cuInit referenced in function main
-main.cu.obj : error LNK2019: unresolved external symbol cuDeviceGet referenced in function main
-main.cu.obj : error LNK2019: unresolved external symbol cuDeviceGetCount referenced in function main
-main.cu.obj : error LNK2019: unresolved external symbol cuCtxCreate_v2 referenced in function main
-main.cu.obj : error LNK2019: unresolved external symbol cuCtxSynchronize referenced in function main
-main.cu.obj : error LNK2019: unresolved external symbol cuModuleLoad referenced in function main
-main.cu.obj : error LNK2019: unresolved external symbol cuModuleGetFunction referenced in function main
-main.cu.obj : error LNK2019: unresolved external symbol cuMemAlloc_v2 referenced in function main
-main.cu.obj : error LNK2019: unresolved external symbol cuMemFree_v2 referenced in function main
-main.cu.obj : error LNK2019: unresolved external symbol cuMemcpyHtoD_v2 referenced in function main
-main.cu.obj : error LNK2019: unresolved external symbol cuMemcpyDtoH_v2 referenced in function main
-main.cu.obj : error LNK2019: unresolved external symbol cuLaunchKernel referenced in function main
-C:\Users\PhotonUser\Documents\UWEE524\hw\kevin\VS\Project1\x64\Debug\Project1.exe : fatal error LNK1120: 12 unresolved externals
+  Project1.vcxproj -> C:\Users\PhotonUser\Documents\UWEE524\hw\kevin\VS\Project1\x64\Debug\Project1.exe

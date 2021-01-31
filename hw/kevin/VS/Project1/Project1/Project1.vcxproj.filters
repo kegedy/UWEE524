@@ -24,7 +24,7 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="matrix_add.cu">
-      <Filter>Header Files</Filter>
+      <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -34,7 +34,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="matrix_add.ptx">
-      <Filter>Header Files</Filter>
+      <Filter>Source Files</Filter>
     </None>
   </ItemGroup>
 </Project>

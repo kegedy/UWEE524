@@ -3,9 +3,9 @@
 #include <stdlib.h>
 #include <assert.h>
 #include <cuda.h>
-#include <cuda_runtime.h>
 #include "helper.h"
 #include "matrix_add.cu"
+#include "matrix_add_test.cu"
 
 #define N 1024
 #define M 1024
@@ -25,7 +25,7 @@
 
 int main(int argc, char** argv) {
 
-    // Define static variables
+    // Configure device
     int deviceCount = 0;
     CUdevice cuDevice;
     CUcontext cuContext;
@@ -48,6 +48,7 @@ int main(int argc, char** argv) {
     // Create context -> cuContext
     cuCtxCreate(&cuContext, 0, cuDevice);
 
+    // Define static variables
     TIMER_INIT
     CUmodule cuModule;
     CUfunction cuFunction;
@@ -105,12 +106,6 @@ int main(int argc, char** argv) {
             sharedMemBytes, hStream, args, 0);
     cuCtxSynchronize();
     TIMER_STOP
-
-        // Check for errors
-        cudaError_t cuErrSync = cudaGetLastError();
-    if (cuErrSync != cudaSuccess) printf("sync error: %s\n", cudaGetErrorString(cuErrSync));
-    cudaError_t cuErrAsync = cudaDeviceSynchronize();
-    if (cuErrAsync != cudaSuccess) printf("asyc error:  %s\n", cudaGetErrorString(cuErrAsync));
 
     // Retrieve results from device & verify/use
     cuMemcpyDtoH(c, dev_c, size);

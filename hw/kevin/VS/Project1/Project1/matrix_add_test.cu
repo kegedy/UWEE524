@@ -48,9 +48,16 @@ void matrix_add_test() {
     cuModuleGetFunction(&cuFunction, cuModule, KernelName);
 
     // Allocate vectors in host memory
-    float** a = (float**)malloc(size);
-    float** b = (float**)malloc(size);
-    float** c = (float**)malloc(size);
+    a[M][N];
+    b[M][N];
+    c[M][N];
+    //float** a = (float**)malloc(M * sizeof(float*));
+    //for(int i = 0; i < M; i++) a[i] = (float*)malloc(N * sizeof(float));
+    //float** b = (float**)malloc(M * sizeof(float*));
+    //for(int i = 0; i < M; i++) b[i] = (float*)malloc(N * sizeof(float));
+    //float** c = (float**)malloc(M * sizeof(float*));
+    //for(int i = 0; i < M; i++) c[i] = (float*)malloc(N * sizeof(float));
+
 
     // Allocate vectors in device memory
     CUdeviceptr dev_a, dev_b, dev_c;
@@ -94,9 +101,9 @@ void matrix_add_test() {
     checkElementsMat(7, c, M, N);
 
     // Free Host Memory
-    free(a);
-    free(b);
-    free(c);
+    // free(a);
+    // free(b);
+    // free(c);
 
     // Free Device Memory
     cuMemFree(dev_a);

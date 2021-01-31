@@ -5,15 +5,9 @@
 `git clone git@github.com:kegedy/UWEE524.git`
 
 ### Compile CUDA kernels
-`nvcc -o matrix_add.ptx matrix_add.cu -ptx`
 `nvcc -o dot_product.ptx dot_product.cu -ptx`
+`nvcc -o matrix_add.ptx matrix_add.cu -ptx`
 `nvcc -o blas2.ptx blas2.cu -ptx`
-
-### References
-https://www.nvidia.com/content/GTC-2010/pdfs/2131_GTC2010.pdf
-https://www.jics.utk.edu/files/images/csure-reu/2015/Tutorial/CUDA-Intro.pdf
-https://stackoverflow.com/questions/1739259/how-to-use-queryperformancecounter
-https://gist.github.com/tautologico/2879581
 
 ### Questions
 Q1. See comments in matrix_add.cu, lines 8-10.

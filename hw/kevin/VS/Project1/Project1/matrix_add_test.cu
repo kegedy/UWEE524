@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <assert.h>
 #include <cuda.h>
+#include <builtin_types.h>
 #include "helper.h"
 
 #define N 1024
@@ -48,16 +49,15 @@ void matrix_add_test() {
     cuModuleGetFunction(&cuFunction, cuModule, KernelName);
 
     // Allocate vectors in host memory
-    a[M][N];
-    b[M][N];
-    c[M][N];
+    float a[M][N];
+    float b[M][N];
+    float c[M][N];
     //float** a = (float**)malloc(M * sizeof(float*));
     //for(int i = 0; i < M; i++) a[i] = (float*)malloc(N * sizeof(float));
     //float** b = (float**)malloc(M * sizeof(float*));
     //for(int i = 0; i < M; i++) b[i] = (float*)malloc(N * sizeof(float));
     //float** c = (float**)malloc(M * sizeof(float*));
     //for(int i = 0; i < M; i++) c[i] = (float*)malloc(N * sizeof(float));
-
 
     // Allocate vectors in device memory
     CUdeviceptr dev_a, dev_b, dev_c;
@@ -66,9 +66,24 @@ void matrix_add_test() {
     cuMemAlloc(&dev_c, size);
 
     // Initialize host vectors
-    initMat(3, a, M, N);
-    initMat(4, b, M, N);
-    initMat(0, c, M, N);
+    //initMat(3, a, M, N);
+    //initMat(4, b, M, N);
+    //initMat(0, c, M, N);
+    for (int i = 0; i < M; i++) {
+        for (int j = 0; j < N; j++) {
+            a[i][j] = 3;
+        }
+    }
+    for (int i = 0; i < M; i++) {
+        for (int j = 0; j < N; j++) {
+            b[i][j] = 4;
+        }
+    }
+    for (int i = 0; i < M; i++) {
+        for (int j = 0; j < N; j++) {
+            c[i][j] = 0;
+        }
+    }
 
     // Copy vectors from host memory to device memory
     cuMemcpyHtoD(dev_a, a, size);
@@ -88,17 +103,20 @@ void matrix_add_test() {
     cuCtxSynchronize();
     TIMER_STOP
 
-    // Check for errors
-    cudaError_t cuErrSync = cudaGetLastError();
-    if (cuErrSync != cudaSuccess) printf("sync error: %s\n", cudaGetErrorString(cuErrSync));
-    cudaError_t cuErrAsync = cudaDeviceSynchronize();
-    if (cuErrAsync != cudaSuccess) printf("asyc error:  %s\n", cudaGetErrorString(cuErrAsync));
-
     // Retrieve results from device & verify/use
     cuMemcpyDtoH(c, dev_c, size);
 
     // Check data for correctness
-    checkElementsMat(7, c, M, N);
+    //checkElementsMat(7, c, M, N);
+    float target = 7;
+    for (int i = 0; i < M; i++) {
+        for (int j = 0; j < N; j++) {
+            if (a[i][j] != target) {
+                printf("FAIL: a[%d][%d] - %0.0f does not equal %0.0f\n", i, j, a[i][j], target);
+            }
+        }
+    }
+    printf("SUCCESS! All values calculated correctly.\n");
 
     // Free Host Memory
     // free(a);

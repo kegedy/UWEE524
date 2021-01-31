@@ -1,15 +1,15 @@
-// MATRIX ADDITION
+#include "device_launch_parameters.h"
 
 extern "C"
-__global__ void matrix_add(float* a, float* b, float* c, int M, int N) {
+__global__ void matrix_add(float* a, float* b, float* c) {
 
-	float col = blockDim.x * blockIdx.x + threadIdx.x; 
-	float row = blockDim.y * blockIdx.y + threadIdx.y;
+	int col = blockDim.x * blockIdx.x + threadIdx.x; 
+	int row = blockDim.y * blockIdx.y + threadIdx.y;
     // For MxN matrix, 
     // Row-Major: row*N + col
     // Col-Major: col*M + row [not implemented]
-    if (row < M && column < N) {
-        float tid =  row * N + col;
+    if (row < M && col < N) {
+        int tid =  row * N + col;
         c[tid] = a[tid] + b[tid];
     }
 }

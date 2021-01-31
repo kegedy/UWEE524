@@ -1,33 +1,7 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <assert.h>
 
-// https://gist.github.com/tautologico/2879581
-#define checkCudaErrors(err)  __checkCudaErrors (err, __FILE__, __LINE__)
-
-inline void __checkCudaErrors( CUresult err, const char *file, const int line )
-{
-    if( CUDA_SUCCESS != err) {
-        fprintf(stderr,
-                "CUDA Driver API error = %04d from file <%s>, line %i.\n",
-                err, file, line );
-        exit(0);
-    }
-}
-
-// TIME OPERATIONS: 
-// https://stackoverflow.com/questions/1739259/how-to-use-queryperformancecounter
-#define TIMER_INIT \
-    LARGE_INTEGER frequency; \
-    LARGE_INTEGER t1,t2; \
-    double elapsedTime; \
-    QueryPerformanceFrequency(&frequency);
-
-#define TIMER_START QueryPerformanceCounter(&t1);
-
-#define TIMER_STOP \
-    QueryPerformanceCounter(&t2); \
-    elapsedTime=(float)(t2.QuadPart-t1.QuadPart)/frequency.QuadPart; \
-    std::wcout<<elapsedTime<<L" sec"<<endl;
 
 void initArr(float num, float* a, int N) {
     for (int i = 0; i < N; i++) {
